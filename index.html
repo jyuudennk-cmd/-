@@ -169,10 +169,52 @@
     }
   });
 
-  // フォーム送信時の処理（フェーズ3のテスト用に、今は送信せずログに出すだけの設定にしています）
+// フォーム送信時の処理（実際にGASへデータを送信する）
   document.getElementById('counselingForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    alert('送信ボタンが押されました！(※バックエンドへの送信処理は次のステップで実装します)');
+    e.preventDefault(); // 画面の再読み込みを防ぐ
+
+    const submitBtn = document.querySelector('.btn-submit');
+    submitBtn.disabled = true;
+    submitBtn.textContent = '送信中...';
+
+    // フォームの入力内容を収集
+    const formData = new FormData(this);
+    const data = {};
+
+    formData.forEach((value, key) => {
+      if (!data[key]) {
+        data[key] = value;
+      } else {
+        // 複数選択されたチェックボックスはカンマ区切りにする
+        data[key] += ', ' + value;
+      }
+    });
+
+    // GASへデータを送信 (POST)
+    fetch(GAS_URL, {
+      method: 'POST',
+      body: JSON.stringify(data),
+      headers: { 'Content-Type': 'text/plain' } // CORS回避
+    })
+    .then(response => response.json())
+    .then(result => {
+      if(result.status === 'success') {
+        alert('データを送信しました！');
+        this.reset(); // フォームの中身を空に戻す
+        personSelect.innerHTML = '<option value="">先にエリアを選択してください</option>';
+      } else {
+        alert('エラーが発生しました: ' + result.message);
+      }
+    })
+    .catch(error => {
+      console.error('Error:', error);
+      alert('通信エラーが発生しました。');
+    })
+    .finally(() => {
+      // ボタンを元の状態に戻す
+      submitBtn.disabled = false;
+      submitBtn.textContent = '集計データを送信する';
+    });
   });
 </script>
 
