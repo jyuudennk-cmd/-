@@ -20,7 +20,6 @@
     .other-input { width: 150px; margin-left: 5px; }
     .btn-submit { display: block; width: 100%; padding: 15px; background: #28a745; color: #fff; border: none; border-radius: 4px; font-size: 18px; font-weight: bold; cursor: pointer; transition: background 0.3s; }
     .btn-submit:hover { background: #218838; }
-    #loading { display: none; text-align: center; color: #0056b3; font-weight: bold; margin-bottom: 15px; }
   </style>
 </head>
 <body>
@@ -109,7 +108,7 @@
     </div>
 
     <p class="closing-text">最後までご記入頂き誠にありがとうございます。スタッフが参りますのでこのままお持ち下さい。</p>
-
+    
     <div class="section">
       <div class="section-title">【スタッフ記入欄】</div>
       <div class="form-group">
@@ -137,16 +136,13 @@
   let masterData = {};
   const areaSelect = document.getElementById('areaSelect');
   const personSelect = document.getElementById('personSelect');
-  const loading = document.getElementById('loading');
 
-  // ページ読み込み時にマスタデータを取得
+  // ページ読み込み時にマスタデータを裏側で取得
   window.onload = function() {
-    loading.style.display = 'block';
     fetch(GAS_URL, { redirect: "follow" })
       .then(response => response.json())
       .then(data => {
         masterData = data;
-        loading.style.display = 'none';
         for (const area in masterData) {
           const option = document.createElement('option');
           option.value = area;
@@ -155,8 +151,7 @@
         }
       })
       .catch(error => {
-        console.error('Error:', error);
-        loading.textContent = 'データの読み込みに失敗しました。URLを確認してください。';
+        console.error('マスタデータの読み込みに失敗しました:', error);
       });
   };
 
@@ -207,6 +202,7 @@
         alert('データを送信しました！');
         this.reset(); 
         personSelect.innerHTML = '<option value="">先にエリアを選択してください</option>';
+        window.scrollTo(0, 0); // 送信完了後に画面の一番上に戻す（おまけ）
       } else {
         alert('エラーが発生しました: ' + result.message);
       }
