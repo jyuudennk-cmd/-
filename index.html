@@ -7,7 +7,10 @@
   <style>
     body { font-family: sans-serif; background-color: #f4f7f6; color: #333; line-height: 1.6; padding: 20px; }
     .container { max-width: 800px; margin: auto; background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-    h1 { font-size: 24px; text-align: center; border-bottom: 2px solid #0056b3; padding-bottom: 10px; margin-bottom: 20px; }
+    h1 { font-size: 24px; text-align: center; border-bottom: 2px solid #0056b3; padding-bottom: 10px; margin-bottom: 10px; }
+    .intro-text { font-size: 14px; margin-bottom: 25px; line-height: 1.8; }
+    .closing-text { font-weight: bold; font-size: 15px; margin-top: 25px; margin-bottom: 10px; }
+    .note-text { font-size: 11px; color: #666; margin-bottom: 25px; line-height: 1.4; }
     .section { margin-bottom: 25px; padding: 15px; background: #f9f9f9; border-radius: 6px; }
     .section-title { font-weight: bold; background: #0056b3; color: #fff; padding: 5px 10px; display: inline-block; border-radius: 4px; margin-bottom: 15px; font-size: 16px; }
     .form-group { margin-bottom: 15px; }
@@ -25,24 +28,14 @@
 <div class="container">
   <h1>お客様カウンセリングシート</h1>
 
+  <p class="intro-text">
+    お客様の最適なライフラインをご提案させて頂くためご協力をお願いいたします。<br>
+    なお本アンケートに個人情報は記載はしないため、ご安心ください。
+  </p>
+
   <div id="loading">マスタデータを読み込み中...</div>
 
   <form id="counselingForm">
-    <div class="section">
-      <div class="section-title">スタッフ情報</div>
-      <div class="form-group">
-        <label for="areaSelect">エリア：</label>
-        <select id="areaSelect" name="area" required>
-          <option value="">選択してください</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label for="personSelect">担当者：</label>
-        <select id="personSelect" name="person" required>
-          <option value="">先にエリアを選択してください</option>
-        </select>
-      </div>
-    </div>
 
     <div class="section">
       <div class="section-title">本日の来店目的</div>
@@ -74,10 +67,10 @@
     <div class="section">
       <div class="section-title">学割対象者の確認</div>
       <div class="form-group">
-        <label><input type="radio" name="student" value="お子様の有無"> お子様の有無</label>
-        <label><input type="radio" name="student" value="0歳~15歳"> 0歳~15歳</label>
-        <label><input type="radio" name="student" value="16歳~18歳以下"> 16歳~18歳以下</label>
-        <label><input type="radio" name="student" value="19歳~22歳"> 19歳~22歳</label>
+        <label><input type="checkbox" name="student" value="お子様の有無"> お子様の有無</label>
+        <label><input type="checkbox" name="student" value="0歳~15歳"> 0歳~15歳</label>
+        <label><input type="checkbox" name="student" value="16歳~18歳以下"> 16歳~18歳以下</label>
+        <label><input type="checkbox" name="student" value="19歳~22歳"> 19歳~22歳</label>
       </div>
     </div>
 
@@ -111,9 +104,28 @@
       </div>
       <div class="form-group">
         <strong>★③セキュリティ補償</strong><br>
-        <label><input type="radio" name="security" value="故障補償あり"> 故障補償あり</label>
-        <label><input type="radio" name="security" value="詐欺/セキュリティ補償あり"> 詐欺/セキュリティ補償あり</label>
-        <label><input type="radio" name="security" value="加入なし"> 加入なし</label>
+        <label><input type="checkbox" name="security" value="故障補償あり"> 故障補償あり</label>
+        <label><input type="checkbox" name="security" value="詐欺/セキュリティ補償あり"> 詐欺/セキュリティ補償あり</label>
+        <label><input type="checkbox" name="security" value="加入なし"> 加入なし</label>
+      </div>
+    </div>
+
+    <p class="closing-text">最後までご記入頂き誠にありがとうございます。スタッフが参りますのでこのままお持ち下さい。</p>
+    <p class="note-text">※株式会社NTTドコモ(以下「ドコモ」といいます)は、本アンケートの回答結果に含まれる個人情報(以下「本件情報」といいます)を、本アンケートに基づく提案およびサービス向上等の目的で利用します。</p>
+
+    <div class="section">
+      <div class="section-title">【スタッフ記入欄】</div>
+      <div class="form-group">
+        <label for="areaSelect">エリア：</label>
+        <select id="areaSelect" name="area" required>
+          <option value="">選択してください</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="personSelect">担当者：</label>
+        <select id="personSelect" name="person" required>
+          <option value="">先にエリアを選択してください</option>
+        </select>
       </div>
     </div>
 
@@ -122,7 +134,7 @@
 </div>
 
 <script>
-  // ★GASで発行された「ウェブアプリのURL」をここに貼り付けます
+  // GASで発行された「ウェブアプリのURL」
   const GAS_URL = 'https://script.google.com/macros/s/AKfycbwrgQpqIDytsjlhLDgWX5qgCwV09ZnmobxEs552YbVNYGlqIsTbQ1zV5jZSHkDwsx_foQ/exec';
 
   let masterData = {};
@@ -133,12 +145,11 @@
   // ページ読み込み時にマスタデータを取得
   window.onload = function() {
     loading.style.display = 'block';
-    fetch(GAS_URL)
+    fetch(GAS_URL, { redirect: "follow" })
       .then(response => response.json())
       .then(data => {
         masterData = data;
         loading.style.display = 'none';
-        // エリアのプルダウンを作成
         for (const area in masterData) {
           const option = document.createElement('option');
           option.value = area;
@@ -169,15 +180,14 @@
     }
   });
 
-// フォーム送信時の処理（実際にGASへデータを送信する）
+  // フォーム送信時の処理
   document.getElementById('counselingForm').addEventListener('submit', function(e) {
-    e.preventDefault(); // 画面の再読み込みを防ぐ
+    e.preventDefault(); 
 
     const submitBtn = document.querySelector('.btn-submit');
     submitBtn.disabled = true;
     submitBtn.textContent = '送信中...';
 
-    // フォームの入力内容を収集
     const formData = new FormData(this);
     const data = {};
 
@@ -185,22 +195,20 @@
       if (!data[key]) {
         data[key] = value;
       } else {
-        // 複数選択されたチェックボックスはカンマ区切りにする
         data[key] += ', ' + value;
       }
     });
 
-    // GASへデータを送信 (POST)
     fetch(GAS_URL, {
       method: 'POST',
       body: JSON.stringify(data),
-      headers: { 'Content-Type': 'text/plain' } // CORS回避
+      headers: { 'Content-Type': 'text/plain' }
     })
     .then(response => response.json())
     .then(result => {
       if(result.status === 'success') {
         alert('データを送信しました！');
-        this.reset(); // フォームの中身を空に戻す
+        this.reset(); 
         personSelect.innerHTML = '<option value="">先にエリアを選択してください</option>';
       } else {
         alert('エラーが発生しました: ' + result.message);
@@ -211,7 +219,6 @@
       alert('通信エラーが発生しました。');
     })
     .finally(() => {
-      // ボタンを元の状態に戻す
       submitBtn.disabled = false;
       submitBtn.textContent = '集計データを送信する';
     });
