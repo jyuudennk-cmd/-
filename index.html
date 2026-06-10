@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>お客様カウンセリングシート</title>
+  <style>
+    body { font-family: sans-serif; background-color: #f4f7f6; color: #333; line-height: 1.6; padding: 20px; }
+    .container { max-width: 800px; margin: auto; background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+    h1 { font-size: 24px; text-align: center; border-bottom: 2px solid #0056b3; padding-bottom: 10px; margin-bottom: 20px; }
+    .section { margin-bottom: 25px; padding: 15px; background: #f9f9f9; border-radius: 6px; }
+    .section-title { font-weight: bold; background: #0056b3; color: #fff; padding: 5px 10px; display: inline-block; border-radius: 4px; margin-bottom: 15px; font-size: 16px; }
+    .form-group { margin-bottom: 15px; }
+    label { display: inline-block; margin-right: 15px; margin-bottom: 5px; cursor: pointer; }
+    select, input[type="text"] { padding: 8px; border: 1px solid #ccc; border-radius: 4px; font-size: 16px; }
+    select { width: 200px; }
+    .other-input { width: 150px; margin-left: 5px; }
+    .btn-submit { display: block; width: 100%; padding: 15px; background: #28a745; color: #fff; border: none; border-radius: 4px; font-size: 18px; font-weight: bold; cursor: pointer; transition: background 0.3s; }
+    .btn-submit:hover { background: #218838; }
+    #loading { display: none; text-align: center; color: #0056b3; font-weight: bold; margin-bottom: 15px; }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>お客様カウンセリングシート</h1>
+
+  <div id="loading">マスタデータを読み込み中...</div>
+
+  <form id="counselingForm">
+    <div class="section">
+      <div class="section-title">スタッフ情報</div>
+      <div class="form-group">
+        <label for="areaSelect">エリア：</label>
+        <select id="areaSelect" name="area" required>
+          <option value="">選択してください</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="personSelect">担当者：</label>
+        <select id="personSelect" name="person" required>
+          <option value="">先にエリアを選択してください</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">本日の来店目的</div>
+      <div class="form-group">
+        <label><input type="checkbox" name="purpose" value="イベント参加"> イベント参加</label>
+        <label><input type="checkbox" name="purpose" value="スマホご相談"> スマホご相談</label>
+        <label><input type="checkbox" name="purpose" value="ライフラインご相談"> ライフラインご相談</label>
+        <label><input type="checkbox" name="purpose" value="ご契約"> ご契約</label>
+        <label><input type="checkbox" name="purpose" value="見積待ち"> 見積待ち</label>
+      </div>
+      <div class="form-group">
+        <label><input type="checkbox" name="purpose" value="ライフラインも便利であれば教えて欲しい"> ライフラインも便利であれば教えて欲しい(ネット、でんき、ガス、カード等)</label>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">ご家族通信キャリア状況</div>
+      <div class="form-group">
+        <label><input type="checkbox" name="carrier" value="docomo"> docomo</label>
+        <label><input type="checkbox" name="carrier" value="ソフトバンク"> ソフトバンク</label>
+        <label><input type="checkbox" name="carrier" value="au"> au</label>
+        <label><input type="checkbox" name="carrier" value="UQモバイル"> UQモバイル</label>
+        <label><input type="checkbox" name="carrier" value="Yモバイル"> Yモバイル</label>
+        <label><input type="checkbox" name="carrier" value="楽天モバイル"> 楽天モバイル</label>
+        <label><input type="checkbox" name="carrier" value="上記以外"> 上記以外 <input type="text" name="carrier_other" class="other-input"></label>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">学割対象者の確認</div>
+      <div class="form-group">
+        <label><input type="radio" name="student" value="お子様の有無"> お子様の有無</label>
+        <label><input type="radio" name="student" value="0歳~15歳"> 0歳~15歳</label>
+        <label><input type="radio" name="student" value="16歳~18歳以下"> 16歳~18歳以下</label>
+        <label><input type="radio" name="student" value="19歳~22歳"> 19歳~22歳</label>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">インターネットのご利用状況</div>
+      <div class="form-group">
+        <label><input type="checkbox" name="internet" value="ドコモ光1ギガ"> ドコモ光1ギガ</label>
+        <label><input type="checkbox" name="internet" value="ドコモ光10ギガ"> ドコモ光10ギガ</label>
+        <label><input type="checkbox" name="internet" value="ソフトバンク光"> ソフトバンク光</label>
+        <label><input type="checkbox" name="internet" value="au光"> au光</label>
+        <label><input type="checkbox" name="internet" value="フレッツ光"> フレッツ光</label><br>
+        <label><input type="checkbox" name="internet" value="nuro光"> nuro光</label>
+        <label><input type="checkbox" name="internet" value="CATV系"> CATV系</label>
+        <label><input type="checkbox" name="internet" value="置き型ルーター"> 置き型ルーター</label>
+        <label><input type="checkbox" name="internet" value="その他光"> その他光 <input type="text" name="internet_other" class="other-input"></label>
+      </div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">ライフラインについて</div>
+      <div class="form-group">
+        <strong>★①でんき</strong><br>
+        <label><input type="checkbox" name="electricity" value="ドコモでんき"> ドコモでんき</label>
+        <label><input type="checkbox" name="electricity" value="地域電力"> 地域電力</label>
+        <label><input type="checkbox" name="electricity" value="その他コラボ"> その他コラボ <input type="text" name="electricity_other" class="other-input"></label>
+      </div>
+      <div class="form-group">
+        <strong>★②カード(ポイ活)</strong><br>
+        <label><input type="checkbox" name="card" value="dカード系"> dカード系</label>
+        <label><input type="checkbox" name="card" value="その他カード"> その他カード <input type="text" name="card_other" class="other-input"></label>
+      </div>
+      <div class="form-group">
+        <strong>★③セキュリティ補償</strong><br>
+        <label><input type="radio" name="security" value="故障補償あり"> 故障補償あり</label>
+        <label><input type="radio" name="security" value="詐欺/セキュリティ補償あり"> 詐欺/セキュリティ補償あり</label>
+        <label><input type="radio" name="security" value="加入なし"> 加入なし</label>
+      </div>
+    </div>
+
+    <button type="submit" class="btn-submit">集計データを送信する</button>
+  </form>
+</div>
+
+<script>
+  // ★GASで発行された「ウェブアプリのURL」をここに貼り付けます
+  const GAS_URL = 'ここにURLを貼り付けます';
+
+  let masterData = {};
+  const areaSelect = document.getElementById('areaSelect');
+  const personSelect = document.getElementById('personSelect');
+  const loading = document.getElementById('loading');
+
+  // ページ読み込み時にマスタデータを取得
+  window.onload = function() {
+    loading.style.display = 'block';
+    fetch(GAS_URL)
+      .then(response => response.json())
+      .then(data => {
+        masterData = data;
+        loading.style.display = 'none';
+        // エリアのプルダウンを作成
+        for (const area in masterData) {
+          const option = document.createElement('option');
+          option.value = area;
+          option.textContent = area;
+          areaSelect.appendChild(option);
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        loading.textContent = 'データの読み込みに失敗しました。URLを確認してください。';
+      });
+  };
+
+  // エリアが変更されたら担当者プルダウンを更新
+  areaSelect.addEventListener('change', function() {
+    const selectedArea = this.value;
+    personSelect.innerHTML = '<option value="">選択してください</option>';
+    
+    if (selectedArea && masterData[selectedArea]) {
+      masterData[selectedArea].forEach(person => {
+        const option = document.createElement('option');
+        option.value = person;
+        option.textContent = person;
+        personSelect.appendChild(option);
+      });
+    } else {
+      personSelect.innerHTML = '<option value="">先にエリアを選択してください</option>';
+    }
+  });
+
+  // フォーム送信時の処理（フェーズ3のテスト用に、今は送信せずログに出すだけの設定にしています）
+  document.getElementById('counselingForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    alert('送信ボタンが押されました！(※バックエンドへの送信処理は次のステップで実装します)');
+  });
+</script>
+
+</body>
+</html>
