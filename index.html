@@ -18,8 +18,19 @@
     select, input[type="text"] { padding: 8px; border: 1px solid #ccc; border-radius: 4px; font-size: 16px; }
     select { width: 200px; }
     .other-input { width: 150px; margin-left: 5px; }
+    
+    /* ボタンのスタイル変更 */
+    .btn-confirm { display: block; width: 100%; padding: 15px; background: #0056b3; color: #fff; border: none; border-radius: 4px; font-size: 18px; font-weight: bold; cursor: pointer; transition: background 0.3s; margin-bottom: 20px; }
+    .btn-confirm:hover { background: #004494; }
     .btn-submit { display: block; width: 100%; padding: 15px; background: #28a745; color: #fff; border: none; border-radius: 4px; font-size: 18px; font-weight: bold; cursor: pointer; transition: background 0.3s; }
     .btn-submit:hover { background: #218838; }
+    
+    /* 確認エリアのスタイル */
+    .confirm-box { padding: 20px; border: 2px solid #0056b3; background: #eef5fc; border-radius: 6px; margin-bottom: 25px; }
+    .confirm-title { font-weight: bold; font-size: 18px; text-align: center; color: #0056b3; margin-bottom: 15px; border-bottom: 1px solid #0056b3; padding-bottom: 10px; }
+    .confirm-item { margin-bottom: 10px; border-bottom: 1px dashed #ccc; padding-bottom: 5px; }
+    .confirm-item strong { color: #333; display: inline-block; width: 200px; }
+    .confirm-item span { color: #0056b3; font-weight: bold; }
   </style>
 </head>
 <body>
@@ -109,35 +120,46 @@
 
     <p class="closing-text">最後までご記入頂き誠にありがとうございます。スタッフが参りますのでこのままお持ち下さい。</p>
     
-    <div class="section">
-      <div class="section-title">【スタッフ記入欄】</div>
-      <div class="form-group">
-        <label for="areaSelect">エリア：</label>
-        <select id="areaSelect" name="area" required>
-          <option value="">選択してください</option>
-        </select>
+    <button type="button" id="btnConfirm" class="btn-confirm">アンケート内容を確認する</button>
+
+    <div id="staffAndSubmitArea" style="display: none;">
+      
+      <div class="confirm-box">
+        <div class="confirm-title">【スタッフ用】 お客様の回答内容まとめ</div>
+        <div id="confirmationContent"></div>
       </div>
-      <div class="form-group">
-        <label for="personSelect">担当者：</label>
-        <select id="personSelect" name="person" required>
-          <option value="">先にエリアを選択してください</option>
-        </select>
+
+      <div class="section">
+        <div class="section-title">【スタッフ記入欄】</div>
+        <div class="form-group">
+          <label for="areaSelect">エリア：</label>
+          <select id="areaSelect" name="area" required>
+            <option value="">選択してください</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="personSelect">担当者：</label>
+          <select id="personSelect" name="person" required>
+            <option value="">先にエリアを選択してください</option>
+          </select>
+        </div>
       </div>
+
+      <button type="submit" class="btn-submit">集計データを送信する</button>
     </div>
 
-    <button type="submit" class="btn-submit">集計データを送信する</button>
   </form>
 </div>
 
 <script>
-  // GASで発行された「ウェブアプリのURL」
+  // GASのURL
   const GAS_URL = 'https://script.google.com/macros/s/AKfycbwrgQpqIDytsjlhLDgWX5qgCwV09ZnmobxEs552YbVNYGlqIsTbQ1zV5jZSHkDwsx_foQ/exec';
 
   let masterData = {};
   const areaSelect = document.getElementById('areaSelect');
   const personSelect = document.getElementById('personSelect');
 
-  // ページ読み込み時にマスタデータを裏側で取得
+  // マスタデータ取得
   window.onload = function() {
     fetch(GAS_URL, { redirect: "follow" })
       .then(response => response.json())
@@ -150,16 +172,13 @@
           areaSelect.appendChild(option);
         }
       })
-      .catch(error => {
-        console.error('マスタデータの読み込みに失敗しました:', error);
-      });
+      .catch(error => console.error('マスタデータの読み込みに失敗しました:', error));
   };
 
-  // エリアが変更されたら担当者プルダウンを更新
+  // プルダウン連動
   areaSelect.addEventListener('change', function() {
     const selectedArea = this.value;
     personSelect.innerHTML = '<option value="">選択してください</option>';
-    
     if (selectedArea && masterData[selectedArea]) {
       masterData[selectedArea].forEach(person => {
         const option = document.createElement('option');
@@ -172,9 +191,56 @@
     }
   });
 
-  // フォーム送信時の処理
+  // ★追加：内容を確認するボタンの処理
+  document.getElementById('btnConfirm').addEventListener('click', function() {
+    const form = document.getElementById('counselingForm');
+    const formData = new FormData(form);
+    let summaryHTML = '';
+
+    // 項目をまとめるヘルパー関数
+    const addSummary = (title, keys) => {
+      let values = [];
+      keys.forEach(k => {
+        const vals = formData.getAll(k);
+        vals.forEach(v => {
+          if (v.trim() !== '') values.push(v);
+        });
+      });
+      
+      if (values.length > 0) {
+        summaryHTML += `<div class="confirm-item"><strong>${title}</strong><span>${values.join('、 ')}</span></div>`;
+      } else {
+        summaryHTML += `<div class="confirm-item"><strong>${title}</strong><span style="color:#999;">未選択</span></div>`;
+      }
+    };
+
+    addSummary('来店目的', ['purpose']);
+    addSummary('ご家族キャリア', ['carrier', 'carrier_other']);
+    addSummary('学割対象者', ['student']);
+    addSummary('ネット利用状況', ['internet', 'internet_other']);
+    addSummary('でんき', ['electricity', 'electricity_other']);
+    addSummary('カード(ポイ活)', ['card', 'card_other']);
+    addSummary('セキュリティ補償', ['security']);
+
+    // まとめ内容を表示
+    document.getElementById('confirmationContent').innerHTML = summaryHTML;
+    
+    // スタッフ記入欄と送信ボタンを表示
+    document.getElementById('staffAndSubmitArea').style.display = 'block';
+    
+    // ボタンのテキストを変更
+    this.textContent = 'アンケート内容を再確認・更新する';
+  });
+
+  // フォーム送信処理
   document.getElementById('counselingForm').addEventListener('submit', function(e) {
     e.preventDefault(); 
+
+    // エリアと担当者が選ばれているか最終チェック
+    if(!areaSelect.value || !personSelect.value) {
+      alert("スタッフ記入欄のエリアと担当者を選択してください。");
+      return;
+    }
 
     const submitBtn = document.querySelector('.btn-submit');
     submitBtn.disabled = true;
@@ -202,7 +268,9 @@
         alert('データを送信しました！');
         this.reset(); 
         personSelect.innerHTML = '<option value="">先にエリアを選択してください</option>';
-        window.scrollTo(0, 0); // 送信完了後に画面の一番上に戻す（おまけ）
+        document.getElementById('staffAndSubmitArea').style.display = 'none'; // 送信後はスタッフ欄を隠す
+        document.getElementById('btnConfirm').textContent = 'アンケート内容を確認する';
+        window.scrollTo(0, 0); 
       } else {
         alert('エラーが発生しました: ' + result.message);
       }
