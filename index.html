@@ -14,6 +14,7 @@
     .section { margin-bottom: 25px; padding: 15px; background: #f9f9f9; border-radius: 6px; }
     .section-title { font-weight: bold; background: #0056b3; color: #fff; padding: 5px 10px; display: inline-block; border-radius: 4px; margin-bottom: 15px; font-size: 16px; }
     .form-group { margin-bottom: 15px; }
+    .form-group strong { display: block; margin-bottom: 8px; color: #0056b3; }
     label { display: inline-block; margin-right: 15px; margin-bottom: 5px; cursor: pointer; }
     select, input[type="text"] { padding: 8px; border: 1px solid #ccc; border-radius: 4px; font-size: 16px; }
     select { width: 200px; }
@@ -45,83 +46,116 @@
 
   <form id="counselingForm">
 
+    <!-- ① 最初の分岐設問 -->
     <div class="section">
-      <div class="section-title">本日の来店目的</div>
+      <div class="section-title">現在の通信キャリア</div>
       <div class="form-group">
-        <label><input type="checkbox" name="purpose" value="イベント参加"> イベント参加</label>
-        <label><input type="checkbox" name="purpose" value="スマホご相談"> スマホご相談</label>
-        <label><input type="checkbox" name="purpose" value="ライフラインご相談"> ライフラインご相談</label>
-        <label><input type="checkbox" name="purpose" value="ご契約"> ご契約</label>
-        <label><input type="checkbox" name="purpose" value="見積待ち"> 見積待ち</label>
-      </div>
-      <div class="form-group">
-        <label><input type="checkbox" name="purpose" value="ライフラインも便利であれば教えて欲しい"> ライフラインも便利であれば教えて欲しい(ネット、でんき、ガス、カード等)</label>
+        <label><input type="radio" name="current_carrier" value="ドコモ利用中" required> ドコモ利用中</label>
+        <label><input type="radio" name="current_carrier" value="他社利用中" required> 他社利用中</label>
       </div>
     </div>
 
-    <div class="section">
-      <div class="section-title">ご家族通信キャリア状況</div>
-      <div class="form-group">
-        <label><input type="checkbox" name="carrier" value="docomo"> docomo</label>
-        <label><input type="checkbox" name="carrier" value="ソフトバンク"> ソフトバンク</label>
-        <label><input type="checkbox" name="carrier" value="au"> au</label>
-        <label><input type="checkbox" name="carrier" value="UQモバイル"> UQモバイル</label>
-        <label><input type="checkbox" name="carrier" value="Yモバイル"> Yモバイル</label>
-        <label><input type="checkbox" name="carrier" value="楽天モバイル"> 楽天モバイル</label>
-        <label><input type="checkbox" name="carrier" value="上記以外"> 上記以外 <input type="text" name="carrier_other" class="other-input"></label>
+    <!-- ② ドコモ利用中が選ばれた場合のアンケート（初期は非表示） -->
+    <div id="branchDocomo" style="display: none;">
+      <div class="section">
+        <div class="section-title">ドコモをご利用中のお客様へ</div>
+        
+        <div class="form-group">
+          <strong>ここに設問1を入力</strong>
+          <label><input type="checkbox" name="docomo_q1" value="選択肢1"> 選択肢1</label>
+          <label><input type="checkbox" name="docomo_q1" value="選択肢2"> 選択肢2</label>
+          <label><input type="checkbox" name="docomo_q1" value="選択肢3"> 選択肢3</label>
+          <label><input type="checkbox" name="docomo_q1" value="選択肢4"> 選択肢4</label>
+        </div>
+        
+        <div class="form-group">
+          <strong>ここに設問2を入力</strong>
+          <label><input type="checkbox" name="docomo_q2" value="選択肢1"> 選択肢1</label>
+          <label><input type="checkbox" name="docomo_q2" value="選択肢2"> 選択肢2</label>
+          <label><input type="checkbox" name="docomo_q2" value="選択肢3"> 選択肢3</label>
+          <label><input type="checkbox" name="docomo_q2" value="選択肢4"> 選択肢4</label>
+        </div>
+
+        <div class="form-group">
+          <strong>ここに設問3を入力</strong>
+          <label><input type="checkbox" name="docomo_q3" value="選択肢1"> 選択肢1</label>
+          <label><input type="checkbox" name="docomo_q3" value="選択肢2"> 選択肢2</label>
+          <label><input type="checkbox" name="docomo_q3" value="選択肢3"> 選択肢3</label>
+          <label><input type="checkbox" name="docomo_q3" value="選択肢4"> 選択肢4</label>
+        </div>
+
+        <div class="form-group">
+          <strong>ここに設問4を入力</strong>
+          <label><input type="checkbox" name="docomo_q4" value="選択肢1"> 選択肢1</label>
+          <label><input type="checkbox" name="docomo_q4" value="選択肢2"> 選択肢2</label>
+          <label><input type="checkbox" name="docomo_q4" value="選択肢3"> 選択肢3</label>
+          <label><input type="checkbox" name="docomo_q4" value="選択肢4"> 選択肢4</label>
+        </div>
+
+        <div class="form-group">
+          <strong>ここに設問5を入力</strong>
+          <label><input type="checkbox" name="docomo_q5" value="選択肢1"> 選択肢1</label>
+          <label><input type="checkbox" name="docomo_q5" value="選択肢2"> 選択肢2</label>
+          <label><input type="checkbox" name="docomo_q5" value="選択肢3"> 選択肢3</label>
+          <label><input type="checkbox" name="docomo_q5" value="選択肢4"> 選択肢4</label>
+        </div>
       </div>
     </div>
 
-    <div class="section">
-      <div class="section-title">学割対象者の確認</div>
-      <div class="form-group">
-        <label><input type="checkbox" name="student" value="お子様の有無"> お子様の有無</label>
-        <label><input type="checkbox" name="student" value="0歳~15歳"> 0歳~15歳</label>
-        <label><input type="checkbox" name="student" value="16歳~18歳以下"> 16歳~18歳以下</label>
-        <label><input type="checkbox" name="student" value="19歳~22歳"> 19歳~22歳</label>
-      </div>
-    </div>
+    <!-- ③ 他社利用中が選ばれた場合のアンケート（初期は非表示） -->
+    <div id="branchOther" style="display: none;">
+      <div class="section">
+        <div class="section-title">他社をご利用中のお客様へ</div>
+        
+        <div class="form-group">
+          <strong>ここに設問1を入力</strong>
+          <label><input type="checkbox" name="other_q1" value="選択肢1"> 選択肢1</label>
+          <label><input type="checkbox" name="other_q1" value="選択肢2"> 選択肢2</label>
+          <label><input type="checkbox" name="other_q1" value="選択肢3"> 選択肢3</label>
+          <label><input type="checkbox" name="other_q1" value="選択肢4"> 選択肢4</label>
+        </div>
+        
+        <div class="form-group">
+          <strong>ここに設問2を入力</strong>
+          <label><input type="checkbox" name="other_q2" value="選択肢1"> 選択肢1</label>
+          <label><input type="checkbox" name="other_q2" value="選択肢2"> 選択肢2</label>
+          <label><input type="checkbox" name="other_q2" value="選択肢3"> 選択肢3</label>
+          <label><input type="checkbox" name="other_q2" value="選択肢4"> 選択肢4</label>
+        </div>
 
-    <div class="section">
-      <div class="section-title">インターネットのご利用状況</div>
-      <div class="form-group">
-        <label><input type="checkbox" name="internet" value="ドコモ光1ギガ"> ドコモ光1ギガ</label>
-        <label><input type="checkbox" name="internet" value="ドコモ光10ギガ"> ドコモ光10ギガ</label>
-        <label><input type="checkbox" name="internet" value="ソフトバンク光"> ソフトバンク光</label>
-        <label><input type="checkbox" name="internet" value="au光"> au光</label>
-        <label><input type="checkbox" name="internet" value="フレッツ光"> フレッツ光</label><br>
-        <label><input type="checkbox" name="internet" value="nuro光"> nuro光</label>
-        <label><input type="checkbox" name="internet" value="CATV系"> CATV系</label>
-        <label><input type="checkbox" name="internet" value="置き型ルーター"> 置き型ルーター</label>
-        <label><input type="checkbox" name="internet" value="その他光"> その他光 <input type="text" name="internet_other" class="other-input"></label>
-      </div>
-    </div>
+        <div class="form-group">
+          <strong>ここに設問3を入力</strong>
+          <label><input type="checkbox" name="other_q3" value="選択肢1"> 選択肢1</label>
+          <label><input type="checkbox" name="other_q3" value="選択肢2"> 選択肢2</label>
+          <label><input type="checkbox" name="other_q3" value="選択肢3"> 選択肢3</label>
+          <label><input type="checkbox" name="other_q3" value="選択肢4"> 選択肢4</label>
+        </div>
 
-    <div class="section">
-      <div class="section-title">ライフラインについて</div>
-      <div class="form-group">
-        <strong>★①でんき</strong><br>
-        <label><input type="checkbox" name="electricity" value="ドコモでんき"> ドコモでんき</label>
-        <label><input type="checkbox" name="electricity" value="地域電力"> 地域電力</label>
-        <label><input type="checkbox" name="electricity" value="その他コラボ"> その他コラボ <input type="text" name="electricity_other" class="other-input"></label>
-      </div>
-      <div class="form-group">
-        <strong>★②カード(ポイ活)</strong><br>
-        <label><input type="checkbox" name="card" value="dカード系"> dカード系</label>
-        <label><input type="checkbox" name="card" value="その他カード"> その他カード <input type="text" name="card_other" class="other-input"></label>
-      </div>
-      <div class="form-group">
-        <strong>★③セキュリティ補償</strong><br>
-        <label><input type="checkbox" name="security" value="故障補償あり"> 故障補償あり</label>
-        <label><input type="checkbox" name="security" value="詐欺/セキュリティ補償あり"> 詐欺/セキュリティ補償あり</label>
-        <label><input type="checkbox" name="security" value="加入なし"> 加入なし</label>
+        <div class="form-group">
+          <strong>ここに設問4を入力</strong>
+          <label><input type="checkbox" name="other_q4" value="選択肢1"> 選択肢1</label>
+          <label><input type="checkbox" name="other_q4" value="選択肢2"> 選択肢2</label>
+          <label><input type="checkbox" name="other_q4" value="選択肢3"> 選択肢3</label>
+          <label><input type="checkbox" name="other_q4" value="選択肢4"> 選択肢4</label>
+        </div>
+
+        <div class="form-group">
+          <strong>ここに設問5を入力</strong>
+          <label><input type="checkbox" name="other_q5" value="選択肢1"> 選択肢1</label>
+          <label><input type="checkbox" name="other_q5" value="選択肢2"> 選択肢2</label>
+          <label><input type="checkbox" name="other_q5" value="選択肢3"> 選択肢3</label>
+          <label><input type="checkbox" name="other_q5" value="選択肢4"> 選択肢4</label>
+        </div>
       </div>
     </div>
 
     <p class="closing-text">最後までご記入頂き誠にありがとうございます。スタッフが参りますのでこのままお持ち下さい。</p>
-    
+    <p class="note-text">※株式会社NTTドコモ(以下「ドコモ」といいます)は、本アンケートの回答結果に含まれる個人情報(以下「本件情報」といいます)を、本アンケートに基づく提案およびサービス向上等の目的で利用します。</p>
+
+    <!-- 内容を確認するボタン -->
     <button type="button" id="btnConfirm" class="btn-confirm">アンケート内容を確認する</button>
 
+    <!-- 確認エリアとスタッフ記入欄（初期状態は非表示） -->
     <div id="staffAndSubmitArea" style="display: none;">
       
       <div class="confirm-box">
@@ -158,6 +192,9 @@
   let masterData = {};
   const areaSelect = document.getElementById('areaSelect');
   const personSelect = document.getElementById('personSelect');
+  const branchDocomo = document.getElementById('branchDocomo');
+  const branchOther = document.getElementById('branchOther');
+  const carrierRadios = document.querySelectorAll('input[name="current_carrier"]');
 
   // マスタデータ取得
   window.onload = function() {
@@ -191,10 +228,38 @@
     }
   });
 
-  // ★追加：内容を確認するボタンの処理
+  // キャリア選択による分岐処理
+  carrierRadios.forEach(radio => {
+    radio.addEventListener('change', function() {
+      // 選択が切り替わった際に非表示になる側のチェックをリセットする関数
+      const resetInputs = (container) => {
+        container.querySelectorAll('input[type="checkbox"], input[type="radio"]').forEach(el => el.checked = false);
+      };
+
+      if (this.value === 'ドコモ利用中') {
+        branchDocomo.style.display = 'block';
+        branchOther.style.display = 'none';
+        resetInputs(branchOther);
+      } else if (this.value === '他社利用中') {
+        branchDocomo.style.display = 'none';
+        branchOther.style.display = 'block';
+        resetInputs(branchDocomo);
+      }
+    });
+  });
+
+  // 内容を確認するボタンの処理
   document.getElementById('btnConfirm').addEventListener('click', function() {
     const form = document.getElementById('counselingForm');
     const formData = new FormData(form);
+    
+    // 現在のキャリアが選択されているかチェック
+    const currentCarrier = formData.get('current_carrier');
+    if (!currentCarrier) {
+      alert('「現在の通信キャリア」を選択してください。');
+      return;
+    }
+
     let summaryHTML = '';
 
     // 項目をまとめるヘルパー関数
@@ -214,13 +279,23 @@
       }
     };
 
-    addSummary('来店目的', ['purpose']);
-    addSummary('ご家族キャリア', ['carrier', 'carrier_other']);
-    addSummary('学割対象者', ['student']);
-    addSummary('ネット利用状況', ['internet', 'internet_other']);
-    addSummary('でんき', ['electricity', 'electricity_other']);
-    addSummary('カード(ポイ活)', ['card', 'card_other']);
-    addSummary('セキュリティ補償', ['security']);
+    // 共通の設問
+    addSummary('現在のキャリア', ['current_carrier']);
+
+    // 分岐ごとの設問まとめ
+    if (currentCarrier === 'ドコモ利用中') {
+      addSummary('ドコモ設問1', ['docomo_q1']);
+      addSummary('ドコモ設問2', ['docomo_q2']);
+      addSummary('ドコモ設問3', ['docomo_q3']);
+      addSummary('ドコモ設問4', ['docomo_q4']);
+      addSummary('ドコモ設問5', ['docomo_q5']);
+    } else if (currentCarrier === '他社利用中') {
+      addSummary('他社設問1', ['other_q1']);
+      addSummary('他社設問2', ['other_q2']);
+      addSummary('他社設問3', ['other_q3']);
+      addSummary('他社設問4', ['other_q4']);
+      addSummary('他社設問5', ['other_q5']);
+    }
 
     // まとめ内容を表示
     document.getElementById('confirmationContent').innerHTML = summaryHTML;
@@ -267,8 +342,12 @@
       if(result.status === 'success') {
         alert('データを送信しました！');
         this.reset(); 
+        
+        // 分岐エリアとスタッフ記入欄を初期状態（非表示）に戻す
+        branchDocomo.style.display = 'none';
+        branchOther.style.display = 'none';
         personSelect.innerHTML = '<option value="">先にエリアを選択してください</option>';
-        document.getElementById('staffAndSubmitArea').style.display = 'none'; // 送信後はスタッフ欄を隠す
+        document.getElementById('staffAndSubmitArea').style.display = 'none';
         document.getElementById('btnConfirm').textContent = 'アンケート内容を確認する';
         window.scrollTo(0, 0); 
       } else {
